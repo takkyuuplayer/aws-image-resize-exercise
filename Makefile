@@ -7,4 +7,4 @@ test:
 	yarn run test
 	yarn run lint
 
-.PHONY: node_modules
+.PHONY: node_modules test
