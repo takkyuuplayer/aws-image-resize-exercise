@@ -26,5 +26,19 @@ describe("originResponse", () => {
             return originResponse.convert(buf, { format: "png", size: "300x400" })
                 .then((data) => expect(data).toStrictEqual(png));
         });
+
+        it("can change color", async () => {
+            const buf = Buffer.from(svg);
+            const png = fs.readFileSync(__dirname + "/../test/data/android.greyscale.png");
+            return originResponse.convert(buf, { format: "png", color: "greyscale" })
+                .then((data) => expect(data).toStrictEqual(png));
+        });
+
+        it("returns png if the format is not supported", async () => {
+            const buf = Buffer.from(svg);
+            const png = fs.readFileSync(__dirname + "/../test/data/android.png");
+            return originResponse.convert(buf, { format: "gif" })
+                .then((data) => expect(data).toStrictEqual(png));
+        });
     });
 });

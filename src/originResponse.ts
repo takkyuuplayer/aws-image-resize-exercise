@@ -8,13 +8,14 @@ const S3 = new AWS.S3({
 });
 const Bucket = "tp-image-resize";
 const variables = {
-    allowedFormat: ["png", "jpeg", "webp"],
+    allowedFormat: ["png", "jpeg"],
     defaultFormat: "png",
 };
 
 interface IQuery {
     size?: string;
     format?: string;
+    color?: string;
 }
 
 export const convert = (data: Buffer, params: IQuery): Promise<Buffer> => {
@@ -35,6 +36,11 @@ export const convert = (data: Buffer, params: IQuery): Promise<Buffer> => {
         const format = _.includes(variables.allowedFormat, params.format) ? params.format : variables.defaultFormat;
         res = res.toFormat(format);
     }
+
+    if (params.color && params.color === "greyscale") {
+        res = res.greyscale();
+    }
+
     return res.toBuffer();
 };
 
