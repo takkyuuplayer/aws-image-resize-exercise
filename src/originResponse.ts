@@ -1,4 +1,4 @@
-import { CloudFrontHeaders, CloudFrontResponseHandler, CloudFrontResultResponse } from "aws-lambda";
+import { CloudFrontHeaders, CloudFrontRequest, CloudFrontResponseHandler, CloudFrontResultResponse } from "aws-lambda";
 import lodash from "lodash";
 import querystring from "querystring";
 import Sharp from "sharp";
@@ -23,7 +23,7 @@ export const myHandler: CloudFrontResponseHandler = (event, context, callback) =
         return;
     }
 
-    const originalFormat = request.uri.substr(request.uri.lastIndexOf("."));
+    const originalFormat = request.uri.substr(request.uri.lastIndexOf(".") + 1);
     const buffer = response.bodyEncoding === "text"
         ? Buffer.from(response.body as string)
         : Buffer.from(response.body as string, "base64");
