@@ -1,9 +1,12 @@
 module.exports = {
-    entry: "./src/index.ts",
+    entry: {
+        viewerRequest: './src/viewerRequest.ts',
+        originResponse: './src/originResponse.ts',
+    },
     mode: "production",
     target: "node",
     output: {
-        filename: "index.js",
+        filename: "[name].js",
         path: __dirname + "/dist"
     },
     resolve: {
