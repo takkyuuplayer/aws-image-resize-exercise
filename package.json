@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "jest",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "build": "tsc"
   },
   "name": "aws-cloudfront-lambda-image",
   "version": "1.0.0",
