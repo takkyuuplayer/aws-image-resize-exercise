@@ -1,12 +1,30 @@
+import fs from "fs";
+import sharp from "sharp";
 import * as originResponse from "./originResponse";
+
 describe("originResponse", () => {
+    const svg = fs.readFileSync(__dirname + "/../test/data/android.svg", "utf8");
+
     describe("convert", () => {
-        it("returns original image if params is not present", () => {
-            const svg = '<svg><rect x="0" y="0" width="200" height="200" rx="50" ry="50"/></svg>';
+        it("returns original image if params is not present", async () => {
             const buf = Buffer.from(svg);
             return originResponse.convert(buf, {})
                 .then((data) => data.toString("utf-8", 0, data.length))
                 .then((data) => expect(data).toStrictEqual(svg));
+        });
+
+        it("can change format", async () => {
+            const buf = Buffer.from(svg);
+            const png = fs.readFileSync(__dirname + "/../test/data/android.png");
+            return originResponse.convert(buf, { format: "png" })
+                .then((data) => expect(data).toStrictEqual(png));
+        });
+
+        it("can change size", async () => {
+            const buf = Buffer.from(svg);
+            const png = fs.readFileSync(__dirname + "/../test/data/android.300x400.png");
+            return originResponse.convert(buf, { format: "png", size: "300x400" })
+                .then((data) => expect(data).toStrictEqual(png));
         });
     });
 });
