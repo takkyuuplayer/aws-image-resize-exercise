@@ -10,19 +10,19 @@ import Sharp from "sharp";
 import { ALLOWED, DEFAULT_FORMAT } from "./constants";
 import { IQuery } from "./definitions";
 
-export const handle = (request: CloudFrontRequest, response: CloudFrontResultResponse)
+export const handle = async (request: CloudFrontRequest, response: CloudFrontResultResponse)
     : Promise<CloudFrontResultResponse> => {
 
     if (response.status === "404") {
         console.log("Image not found: %j ", request);
 
-        return new Promise((resolve, reject) => resolve(response));
+        return response;
     }
 
     const params = querystring.parse(request.querystring) as IQuery;
 
     if (lodash.isEmpty(params)) {
-        return new Promise((resolve, reject) => resolve(response));
+        return response;
     }
 
     const originalFormat = request.uri.substr(request.uri.lastIndexOf(".") + 1);
@@ -41,15 +41,14 @@ export const handle = (request: CloudFrontRequest, response: CloudFrontResultRes
         || (lodash.includes(ALLOWED.format, originalFormat) ? originalFormat : DEFAULT_FORMAT);
     image = image.toFormat(format);
 
-    return image.toBuffer().then((buf) => {
-        response.body = buf.toString("base64");
-        response.bodyEncoding = "base64";
-        if (format !== originalFormat) {
-            (response.headers as CloudFrontHeaders)["content-type"]
-                = [{ key: "Content-Type", value: "image/" + format }];
-        }
-        return response;
-    });
+    const buf = await image.toBuffer();
+    response.body = buf.toString("base64");
+    response.bodyEncoding = "base64";
+    if (format !== originalFormat) {
+        (response.headers as CloudFrontHeaders)["content-type"]
+            = [{ key: "Content-Type", value: "image/" + format }];
+    }
+    return response;
 };
 
 export const myHandler: CloudFrontResponseHandler = (event, context, callback) => {
