@@ -52,17 +52,20 @@ describe("originResponse", () => {
             };
 
             return handle(request, response).then((res) => {
-                expect(res).toStrictEqual({
-                    body: png,
-                    bodyEncoding: "base64",
-                    headers: {
-                        "content-type": [{ key: "Content-Type", value: "image/png" }],
-                    },
-                    status: "200",
-                });
+                if (process.env.CI) {
+                    expect(res).toMatchSnapshot();
+                } else {
+                    expect(res).toStrictEqual({
+                        body: png,
+                        bodyEncoding: "base64",
+                        headers: {
+                            "content-type": [{ key: "Content-Type", value: "image/png" }],
+                        },
+                        status: "200",
+                    });
+                }
             });
         });
-
         it("convert svg to png as default if only size is specified", () => {
             const svg = fs.readFileSync(__dirname + "/../test/data/android.svg", "utf8");
             const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
@@ -80,14 +83,18 @@ describe("originResponse", () => {
             };
 
             return handle(request, response).then((res) => {
-                expect(res).toStrictEqual({
-                    body: png,
-                    bodyEncoding: "base64",
-                    headers: {
-                        "content-type": [{ key: "Content-Type", value: "image/png" }],
-                    },
-                    status: "200",
-                });
+                if (process.env.CI) {
+                    expect(res).toMatchSnapshot();
+                } else {
+                    expect(res).toStrictEqual({
+                        body: png,
+                        bodyEncoding: "base64",
+                        headers: {
+                            "content-type": [{ key: "Content-Type", value: "image/png" }],
+                        },
+                        status: "200",
+                    });
+                }
             });
         });
 
@@ -108,14 +115,18 @@ describe("originResponse", () => {
             };
 
             return handle(request, response).then((res) => {
-                expect(res).toStrictEqual({
-                    body: jpeg,
-                    bodyEncoding: "base64",
-                    headers: {
-                        "content-type": [{ key: "Content-Type", value: "image/jpeg" }],
-                    },
-                    status: "200",
-                });
+                if (process.env.CI) {
+                    expect(res).toMatchSnapshot();
+                } else {
+                    expect(res).toStrictEqual({
+                        body: jpeg,
+                        bodyEncoding: "base64",
+                        headers: {
+                            "content-type": [{ key: "Content-Type", value: "image/jpeg" }],
+                        },
+                        status: "200",
+                    });
+                }
             });
         });
     });
