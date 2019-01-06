@@ -5,6 +5,10 @@ node_modules:
 
 build:
 	yarn build
+	cd dist \
+		&& npm init -f -y \
+		&& npm install sharp --save \
+		&& npm install --only=prod
 	zip -FS -q -r lambda.zip dist
 
 test:
