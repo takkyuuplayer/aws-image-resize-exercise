@@ -25,9 +25,7 @@ deploy:
 	make output
 
 output:
-	aws cloudformation describe-stacks --stack-name ${StackName} \
-		| jq -c '.Stacks[] | .Outputs' \
-		| jq
+	aws cloudformation describe-stacks --stack-name ${StackName}
 
 help:
 	@cat Makefile

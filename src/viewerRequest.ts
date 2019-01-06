@@ -31,6 +31,9 @@ export const handleRequest = (request: CloudFrontRequest): CloudFrontRequest => 
 
 // Redirect non-allowed request to original image
 export const handler: CloudFrontRequestHandler = (event, context, callback) => {
+    console.log("%j", event);
+    console.log("%j", context);
+
     const request = event.Records[0].cf.request;
 
     callback(null, handleRequest(request));

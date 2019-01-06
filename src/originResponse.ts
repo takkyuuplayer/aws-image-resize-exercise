@@ -52,6 +52,9 @@ export const handle = async (request: CloudFrontRequest, response: CloudFrontRes
 };
 
 export const handler: CloudFrontResponseHandler = (event, context, callback) => {
+    console.log("%j", event);
+    console.log("%j", context);
+
     const request = event.Records[0].cf.request;
     const response = event.Records[0].cf.response;
 
