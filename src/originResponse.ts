@@ -5,7 +5,7 @@ import Sharp from "sharp";
 import { ALLOWED, DEFAULT_FORMAT } from "./constants";
 import { IQuery } from "./definitions";
 
-export const handler: CloudFrontResponseHandler = (event, context, callback) => {
+export const myHandler: CloudFrontResponseHandler = (event, context, callback) => {
     const response = event.Records[0].cf.response as CloudFrontResultResponse;
 
     if (response.status === "404") {
