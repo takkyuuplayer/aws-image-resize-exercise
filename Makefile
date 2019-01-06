@@ -4,7 +4,8 @@ node_modules:
 	yarn install
 
 build:
-	yarn tsc
+	yarn build
+	zip -FS -q -r lambda.zip dist
 
 test:
 	yarn run test
