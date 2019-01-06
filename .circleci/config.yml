@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.10
+      - image: 8base/docker-amazonlinux-node:node8
     working_directory: ~/repo
     steps:
       - checkout
@@ -18,7 +18,8 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       - run: make test
+      - run: make build
 
 
