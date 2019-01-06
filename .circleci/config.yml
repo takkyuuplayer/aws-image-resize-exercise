@@ -21,5 +21,16 @@ jobs:
 
       - run: make test
       - run: make build
-
-
+  provision:
+    docker:
+      - image: circleci/python:2.7-jessie
+    steps:
+      - checkout
+      - run: sudo pip install awscli
+      - run: make test -C deployment
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - provision

@@ -3,6 +3,9 @@ AWS_DEFAULT_REGION=us-east-1
 BucketName=tp-image-resize
 StackName=tp-image-resize
 
+test:
+	aws cloudformation validate-template --template-body file://$(DIR)template.cf.yml
+
 confirm:
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation deploy \
