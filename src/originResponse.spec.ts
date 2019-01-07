@@ -37,7 +37,7 @@ describe("originResponse", () => {
             const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
             const request = {
                 querystring: "format=png&size=100x100",
-                uri: "android.svg",
+                uri: "/android.svg",
             } as CloudFrontRequest;
             const response: CloudFrontResponse = {
                 headers: {
@@ -67,7 +67,7 @@ describe("originResponse", () => {
             const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
             const request = {
                 querystring: "size=100x100",
-                uri: "android.svg",
+                uri: "/android.svg",
             } as CloudFrontRequest;
             const response: CloudFrontResponse = {
                 headers: {
@@ -98,7 +98,7 @@ describe("originResponse", () => {
             const jpeg = fs.readFileSync(__dirname + "/../test/data/android.100x100.png.jpeg").toString("base64");
             const request = {
                 querystring: "format=jpeg",
-                uri: "android.100x100.png",
+                uri: "/android.100x100.png",
             } as CloudFrontRequest;
             const response: CloudFrontResponse = {
                 headers: {

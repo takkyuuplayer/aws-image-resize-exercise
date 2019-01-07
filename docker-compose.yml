@@ -8,11 +8,11 @@ services:
     command: bash
     working_dir: /srv
     environment:
-      - CI=true
-      - AWS_ENDPOINT=localstack
       - AWS_ACCESS_KEY_ID=dummy
-      - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ENDPOINT=localstack
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - CI=true
     links:
       - localstack
   localstack:

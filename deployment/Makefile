@@ -14,6 +14,7 @@ confirm:
 		--stack-name ${StackName} \
 		--template-file template.cf.yml \
 		--parameter-overrides BucketName=${BucketName}
+
 package:
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation package \
@@ -22,6 +23,7 @@ package:
 		--output-template-file packaged.yml
 
 deploy:
+	$(MAKE) package
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation deploy \
 		--capabilities CAPABILITY_IAM \
