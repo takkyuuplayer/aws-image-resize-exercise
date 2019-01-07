@@ -19,6 +19,7 @@
     "@types/sharp": "^0.21.0",
     "awesome-typescript-loader": "^5.2.1",
     "aws-lambda": "^0.1.2",
+    "aws-sdk": "^2.384.0",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "query-string": "^6.2.0",

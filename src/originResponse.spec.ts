@@ -1,4 +1,4 @@
-import { CloudFrontRequest, CloudFrontResultResponse } from "aws-lambda";
+import { CloudFrontRequest, CloudFrontResponse } from "aws-lambda";
 import fs from "fs";
 import sharp = require("sharp");
 import { handle } from "./originResponse";
@@ -7,9 +7,9 @@ describe("originResponse", () => {
     describe("handle", () => {
         it("returns response as it is, if status = 404", () => {
             const request = {} as CloudFrontRequest;
-            const response: CloudFrontResultResponse = {
+            const response = {
                 status: "404",
-            };
+            } as CloudFrontResponse;
             return handle(request, response).then((res) => {
                 expect(res).toStrictEqual({
                     status: "404",
@@ -21,34 +21,30 @@ describe("originResponse", () => {
             const request = {
                 querystring: "",
             } as CloudFrontRequest;
-            const response: CloudFrontResultResponse = {
-                body: "foo",
-                bodyEncoding: "text",
+            const response = {
                 status: "200",
-            };
+                statusDescription: "Foo",
+            } as CloudFrontResponse;
             return handle(request, response).then((res) => {
                 expect(res).toStrictEqual({
-                    body: "foo",
-                    bodyEncoding: "text",
                     status: "200",
+                    statusDescription: "Foo",
                 });
             });
         });
 
         it("converts svg to png", () => {
-            const svg = fs.readFileSync(__dirname + "/../test/data/android.svg", "utf8");
             const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
             const request = {
                 querystring: "format=png&size=100x100",
-                uri: "./test/data/android.svg",
+                uri: "android.svg",
             } as CloudFrontRequest;
-            const response: CloudFrontResultResponse = {
-                body: svg,
-                bodyEncoding: "text",
+            const response: CloudFrontResponse = {
                 headers: {
                     "content-type": [{ key: "Content-Type", value: "image/svg+xml" }],
                 },
                 status: "200",
+                statusDescription: "OK",
             };
 
             return handle(request, response).then((res) => {
@@ -62,24 +58,23 @@ describe("originResponse", () => {
                             "content-type": [{ key: "Content-Type", value: "image/png" }],
                         },
                         status: "200",
+                        statusDescription: "OK",
                     });
                 }
             });
         });
         it("convert svg to png as default if only size is specified", () => {
-            const svg = fs.readFileSync(__dirname + "/../test/data/android.svg", "utf8");
             const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
             const request = {
                 querystring: "size=100x100",
-                uri: "./test/data/android.svg",
+                uri: "android.svg",
             } as CloudFrontRequest;
-            const response: CloudFrontResultResponse = {
-                body: svg,
-                bodyEncoding: "text",
+            const response: CloudFrontResponse = {
                 headers: {
                     "content-type": [{ key: "Content-Type", value: "image/svg+xml" }],
                 },
                 status: "200",
+                statusDescription: "OK",
             };
 
             return handle(request, response).then((res) => {
@@ -93,25 +88,24 @@ describe("originResponse", () => {
                             "content-type": [{ key: "Content-Type", value: "image/png" }],
                         },
                         status: "200",
+                        statusDescription: "OK",
                     });
                 }
             });
         });
 
         it("convert png to jpeg", () => {
-            const png = fs.readFileSync(__dirname + "/../test/data/android.100x100.png").toString("base64");
             const jpeg = fs.readFileSync(__dirname + "/../test/data/android.100x100.png.jpeg").toString("base64");
             const request = {
                 querystring: "format=jpeg",
-                uri: "./test/data/android.100x100.png",
+                uri: "android.100x100.png",
             } as CloudFrontRequest;
-            const response: CloudFrontResultResponse = {
-                body: png,
-                bodyEncoding: "base64",
+            const response: CloudFrontResponse = {
                 headers: {
                     "content-type": [{ key: "Content-Type", value: "image/png" }],
                 },
                 status: "200",
+                statusDescription: "OK",
             };
 
             return handle(request, response).then((res) => {
@@ -125,6 +119,7 @@ describe("originResponse", () => {
                             "content-type": [{ key: "Content-Type", value: "image/jpeg" }],
                         },
                         status: "200",
+                        statusDescription: "OK",
                     });
                 }
             });

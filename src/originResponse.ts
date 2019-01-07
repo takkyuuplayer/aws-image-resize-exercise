@@ -1,19 +1,29 @@
 import {
     CloudFrontHeaders,
     CloudFrontRequest,
+    CloudFrontResponse,
     CloudFrontResponseHandler,
     CloudFrontResultResponse,
 } from "aws-lambda";
+import AWS from "aws-sdk";
 import lodash from "lodash";
 import querystring from "querystring";
 import Sharp from "sharp";
-import { ALLOWED, DEFAULT_FORMAT } from "./constants";
+import { ALLOWED, BUCKET, DEFAULT_FORMAT } from "./constants";
 import { IQuery } from "./definitions";
 
-export const handle = async (request: CloudFrontRequest, response: CloudFrontResultResponse)
+AWS.config.update({
+    s3: { endpoint: "http://127.0.0.1:4572" },
+    s3ForcePathStyle: true,
+});
+const S3 = new AWS.S3({
+    signatureVersion: "v4",
+});
+
+export const handle = async (request: CloudFrontRequest, response: CloudFrontResponse)
     : Promise<CloudFrontResultResponse> => {
 
-    if (response.status === "404") {
+    if (response.status !== "200") {
         console.log("Image not found: %j ", request);
 
         return response;
@@ -26,11 +36,12 @@ export const handle = async (request: CloudFrontRequest, response: CloudFrontRes
     }
 
     const originalFormat = request.uri.substr(request.uri.lastIndexOf(".") + 1);
-    const buffer = response.bodyEncoding === "text"
-        ? Buffer.from(response.body as string)
-        : Buffer.from(response.body as string, "base64");
+    const data = await S3.getObject({
+        Bucket: BUCKET,
+        Key: request.uri,
+    }).promise();
 
-    let image = Sharp(buffer);
+    let image = Sharp(data.Body as Buffer);
 
     if (params.size) {
         const [width, height] = params.size.split("x").map((num) => parseInt(num, 10));
@@ -42,13 +53,15 @@ export const handle = async (request: CloudFrontRequest, response: CloudFrontRes
     image = image.toFormat(format);
 
     const buf = await image.toBuffer();
-    response.body = buf.toString("base64");
-    response.bodyEncoding = "base64";
+    const res = response as CloudFrontResultResponse;
+
+    res.body = buf.toString("base64");
+    res.bodyEncoding = "base64";
     if (format !== originalFormat) {
-        (response.headers as CloudFrontHeaders)["content-type"]
+        (res.headers as CloudFrontHeaders)["content-type"]
             = [{ key: "Content-Type", value: "image/" + format }];
     }
-    return response;
+    return res;
 };
 
 export const handler: CloudFrontResponseHandler = (event, context, callback) => {

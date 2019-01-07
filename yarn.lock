@@ -467,7 +467,7 @@ aws-lambda@^0.1.2:
     commander "^2.5.0"
     dotenv "^0.4.0"
 
-aws-sdk@^*:
+aws-sdk@^*, aws-sdk@^2.384.0:
   version "2.384.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.384.0.tgz#c8fdce7c72f068f6d8b198b53cf33b6f35f3e811"
   integrity sha512-E+pIOWFNhQH7GCkOl5GU+Vl42MlaKtAq0Yenaa2fRGult9097u7TnUx45V1pNKMCN9RnEFWQy3ZH1TEPEYJ0fw==
