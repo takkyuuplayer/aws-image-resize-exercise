@@ -15,4 +15,3 @@ export const ALLOWED = {
 export const DEFAULT_FORMAT = "png";
 
 export const BUCKET = "tp-image-resize";
-
