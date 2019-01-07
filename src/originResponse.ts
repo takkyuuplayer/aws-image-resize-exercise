@@ -5,17 +5,13 @@ import {
     CloudFrontResponseHandler,
     CloudFrontResultResponse,
 } from "aws-lambda";
-import AWS from "aws-sdk";
 import lodash from "lodash";
 import querystring from "querystring";
 import Sharp from "sharp";
+import AWS from "./AWS";
 import { ALLOWED, BUCKET, DEFAULT_FORMAT } from "./constants";
 import { IQuery } from "./definitions";
 
-AWS.config.update({
-    s3: { endpoint: "http://127.0.0.1:4572" },
-    s3ForcePathStyle: true,
-});
 const S3 = new AWS.S3({
     signatureVersion: "v4",
 });
