@@ -14,15 +14,20 @@ confirm:
 		--stack-name ${StackName} \
 		--template-file template.cf.yml \
 		--parameter-overrides BucketName=${BucketName}
+package:
+	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
+	aws cloudformation package \
+		--template-file template.cf.yml \
+		--s3-bucket tp-lambda.us-east-1 \
+		--output-template-file packaged.yml
 
 deploy:
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation deploy \
 		--capabilities CAPABILITY_IAM \
 		--stack-name ${StackName} \
-		--template-file template.cf.yml \
+		--template-file packaged.yml \
 		--parameter-overrides BucketName=${BucketName}
-	make output
 
 output:
 	aws cloudformation describe-stacks --stack-name ${StackName}

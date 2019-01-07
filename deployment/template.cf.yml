@@ -47,7 +47,7 @@ Resources:
   ViewerRequestFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://tp-lambda.us-east-1/viewerRequest.zip
+      CodeUri: ../dist/viewerRequest.zip
       Handler: viewerRequest.handler
       Runtime: nodejs8.10
       MemorySize: 128
@@ -63,7 +63,7 @@ Resources:
   OriginResponseFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://tp-lambda.us-east-1/originResponse.zip
+      CodeUri: ../dist/originResponse.zip
       Handler: originResponse.handler
       Runtime: nodejs8.10
       MemorySize: 512
