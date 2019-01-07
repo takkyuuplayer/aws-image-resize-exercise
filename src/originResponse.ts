@@ -6,7 +6,6 @@ import {
     CloudFrontResultResponse,
 } from "aws-lambda";
 import lodash from "lodash";
-import { resolve } from "path";
 import querystring from "querystring";
 import Sharp from "sharp";
 import AWS from "./AWS";
@@ -78,18 +77,13 @@ export const handle = (request: CloudFrontRequest, response: CloudFrontResponse)
     });
 };
 
-export const handler: CloudFrontResponseHandler = (event, context, callback) => {
+export const handler: CloudFrontResponseHandler = (event) => {
     console.log("%j", event);
-    console.log("%j", context);
+    console.log("01");
 
     const request = event.Records[0].cf.request;
     const response = event.Records[0].cf.response;
 
-    handle(request, response).then((res) => {
-        console.log("Returning resopnse... %j", res);
-        callback(null, res);
-    }).catch((err) => {
-        console.log("Exception while converting image :%j", err);
-        callback(null, response);
-    });
+    console.log("02");
+    return handle(request, response);
 };
