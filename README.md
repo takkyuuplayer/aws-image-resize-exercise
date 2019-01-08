@@ -15,17 +15,11 @@ Image converter with Lambda@Edge
 
 ## Demo
 
-* android.svg
-
-    ![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)
-    
-* android.svg?format=jpeg
-
-    ![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)
-
-* android.svg?size=200x200&format=png
-
-    ![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)
+| path                                | Image                                                                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| android.svg                         | ![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                          |
+| android.svg?format=jpeg             | ![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)         |
+| android.svg?size=200x200&format=png | ![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200) |
 
 ## Architecture
 
