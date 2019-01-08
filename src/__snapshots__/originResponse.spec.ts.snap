@@ -13,6 +13,7 @@ Object {
     ],
   },
   "status": "200",
+  "statusDescription": "OK",
 }
 `;
 
@@ -29,6 +30,7 @@ Object {
     ],
   },
   "status": "200",
+  "statusDescription": "OK",
 }
 `;
 
@@ -45,5 +47,6 @@ Object {
     ],
   },
   "status": "200",
+  "statusDescription": "OK",
 }
 `;

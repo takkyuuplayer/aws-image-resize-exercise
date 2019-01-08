@@ -8,5 +8,17 @@ services:
     command: bash
     working_dir: /srv
     environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ENDPOINT=localstack
+      - AWS_SECRET_ACCESS_KEY=dummy
       - CI=true
-
+    links:
+      - localstack
+  localstack:
+    image: "localstack/localstack"
+    ports:
+      - 4567-4583:4567-4583
+      - 8080:8080
+    environment:
+      - SERVICES=s3

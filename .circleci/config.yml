@@ -3,6 +3,12 @@ jobs:
   build:
     docker:
       - image: 8base/docker-amazonlinux-node:node8
+      - image: "localstack/localstack"
+        ports:
+          - 4567-4583:4567-4583
+          - 8080:8080
+        environment:
+          - SERVICES=s3
     working_directory: ~/repo
     steps:
       - checkout
@@ -13,6 +19,7 @@ jobs:
           - v1-dependencies-
 
       - run: make
+      - run: make localstack
 
       - save_cache:
           paths:
@@ -21,5 +28,16 @@ jobs:
 
       - run: make test
       - run: make build
-
-
+  provision:
+    docker:
+      - image: circleci/python:2.7-jessie
+    steps:
+      - checkout
+      - run: sudo pip install awscli
+      - run: make test -C deployment
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - provision
