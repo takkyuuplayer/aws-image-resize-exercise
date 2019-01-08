@@ -16,26 +16,19 @@ const S3 = new AWS.S3({
     signatureVersion: "v4",
 });
 
-export const handle = (request: CloudFrontRequest, response: CloudFrontResponse)
+export const handle = async (request: CloudFrontRequest, response: CloudFrontResponse)
     : Promise<CloudFrontResultResponse> => {
 
-    console.log("1");
     if (response.status !== "200") {
         console.log("Image not found: %j ", request);
 
-        return new Promise((success, failure) => {
-            success(response);
-        });
+        return response;
     }
 
-    console.log("2");
     const params = querystring.parse(request.querystring) as IQuery;
 
-    console.log("3");
     if (lodash.isEmpty(params)) {
-        return new Promise((success, failure) => {
-            success(response);
-        });
+        return response;
     }
 
     const path = request.uri.substr(1);
@@ -45,45 +38,40 @@ export const handle = (request: CloudFrontRequest, response: CloudFrontResponse)
 
     console.log(`Fetching ${path} ...`);
 
-    return S3.getObject({
+    const data = await S3.getObject({
         Bucket: BUCKET,
         Key: path,
-    }).promise().then((data) => {
-        console.log("Downloaded %j", data);
+    }).promise();
 
-        let image = Sharp(data.Body as Buffer);
+    console.log("Downloaded %j", data);
 
-        if (params.size) {
-            const [width, height] = params.size.split("x").map((num) => parseInt(num, 10));
-            image = image.resize(width, height);
-        }
+    let image = Sharp((data.Body as Buffer));
+    if (params.size) {
+        const [width, height] = params.size.split("x").map((num) => parseInt(num, 10));
+        image = image.resize(width, height);
+    }
+    image = image.toFormat(format);
 
-        image = image.toFormat(format);
+    const buf = await image.toBuffer();
+    const res = (response as CloudFrontResultResponse);
 
-        return image.toBuffer();
-    }).then((buf) => {
-        console.log("Converted");
+    res.body = buf.toString("base64");
+    res.bodyEncoding = "base64";
+    delete (res.headers as CloudFrontHeaders)["content-length"];
+    if (format !== originalFormat) {
+        (res.headers as CloudFrontHeaders)["content-type"]
+            = [{ key: "Content-Type", value: "image/" + format }];
+    }
 
-        const res = response as CloudFrontResultResponse;
-        res.body = buf.toString("base64");
-        res.bodyEncoding = "base64";
-        delete (res.headers as CloudFrontHeaders)["content-length"];
-        if (format !== originalFormat) {
-            (res.headers as CloudFrontHeaders)["content-type"]
-                = [{ key: "Content-Type", value: "image/" + format }];
-        }
-        console.log("%j", res);
-        return res;
-    });
+    console.log("%j", res);
+    return res;
 };
 
 export const handler: CloudFrontResponseHandler = (event) => {
     console.log("%j", event);
-    console.log("01");
 
     const request = event.Records[0].cf.request;
     const response = event.Records[0].cf.response;
 
-    console.log("02");
     return handle(request, response);
 };
