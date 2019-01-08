@@ -29,9 +29,13 @@ Image converter with Lambda@Edge
 
 ## Architecture
 
-### Lambda@Edge
+### Lambda@Edge Function
 
 * [TypeScript](https://www.typescriptlang.org/)
+
+### Deployment
+
+* TBA
 
 ## Reference
 
