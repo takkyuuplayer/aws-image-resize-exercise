@@ -9,9 +9,8 @@ export const handleRequest = (request: CloudFrontRequest): CloudFrontRequest => 
     const params = querystring.parse(request.querystring) as IQuery;
     let query: IQuery = {};
 
-    const keysToIterateOver = Object.keys(ALLOWED).sort() as Array<keyof IQuery>;
     try {
-        keysToIterateOver.forEach((key) => {
+        (Object.keys(ALLOWED) as Array<keyof IQuery>).forEach((key) => {
             if (!params[key]) {
                 return;
             }
@@ -29,7 +28,6 @@ export const handleRequest = (request: CloudFrontRequest): CloudFrontRequest => 
     return request;
 };
 
-// Redirect non-allowed request to original image
 export const handler: CloudFrontRequestHandler = (event, context, callback) => {
     console.log("%j", event);
     console.log("%j", context);

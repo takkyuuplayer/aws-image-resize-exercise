@@ -1,4 +1,7 @@
 export const ALLOWED = {
+    color: [
+        "b-w",
+    ],
     format: [
         "png",
         "jpeg",

@@ -50,6 +50,9 @@ export const handle = async (request: CloudFrontRequest, response: CloudFrontRes
         const [width, height] = params.size.split("x").map((num) => parseInt(num, 10));
         image = image.resize(width, height);
     }
+    if (params.color) {
+        image = image.toColorspace(params.color);
+    }
     image = image.toFormat(format);
 
     const buf = await image.toBuffer();

@@ -124,5 +124,35 @@ describe("originResponse", () => {
                 }
             });
         });
+        it("converts color", () => {
+            const png = fs.readFileSync(__dirname + "/../test/data/android.b-w.png").toString("base64");
+            const request = {
+                querystring: "format=png&size=100x100",
+                uri: "/android.svg",
+            } as CloudFrontRequest;
+            const response: CloudFrontResponse = {
+                headers: {
+                    "content-type": [{ key: "Content-Type", value: "image/svg+xml" }],
+                },
+                status: "200",
+                statusDescription: "OK",
+            };
+
+            return handle(request, response).then((res) => {
+                if (process.env.CI) {
+                    expect(res).toMatchSnapshot();
+                } else {
+                    expect(res).toStrictEqual({
+                        body: png,
+                        bodyEncoding: "base64",
+                        headers: {
+                            "content-type": [{ key: "Content-Type", value: "image/png" }],
+                        },
+                        status: "200",
+                        statusDescription: "OK",
+                    });
+                }
+            });
+        });
     });
 });
