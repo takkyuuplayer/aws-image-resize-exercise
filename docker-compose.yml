@@ -1,6 +1,7 @@
 version: '3'
 services:
   app:
+    container_name: tp-image-resize
     image: 8base/docker-amazonlinux-node:node8
     volumes:
       - .:/srv/
