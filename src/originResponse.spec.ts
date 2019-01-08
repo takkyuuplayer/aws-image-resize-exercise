@@ -125,9 +125,12 @@ describe("originResponse", () => {
             });
         });
         it("converts color", () => {
+            // const svg = fs.readFileSync(__dirname + "/../test/data/android.svg");
+            // sharp(Buffer.from(svg)).toColorspace("b-w").toFile(__dirname + "/../test/data/android.b-w.png");
+
             const png = fs.readFileSync(__dirname + "/../test/data/android.b-w.png").toString("base64");
             const request = {
-                querystring: "format=png&size=100x100",
+                querystring: "color=b-w",
                 uri: "/android.svg",
             } as CloudFrontRequest;
             const response: CloudFrontResponse = {
