@@ -32,6 +32,7 @@ deploy:
 		--parameter-overrides BucketName=${BucketName}
 
 output:
+	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation describe-stacks --stack-name ${StackName}
 
 help:
