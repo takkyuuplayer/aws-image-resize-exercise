@@ -35,3 +35,4 @@ Image converter with Lambda@Edge
 ## Reference
 
 * [Resizing Images with Amazon CloudFront & Lambda@Edge \| AWS CDN Blog \| Networking & Content Delivery](https://aws.amazon.com/blogs/networking-and-content-delivery/resizing-images-with-amazon-cloudfront-lambdaedge-aws-cdn-blog/)
+* [Managing Lambda@Edge and CloudFront deployments by using a CI/CD pipeline \| Networking & Content Delivery](https://aws.amazon.com/blogs/networking-and-content-delivery/managing-lambdaedge-and-cloudfront-deployments-by-using-a-ci-cd-pipeline/)
