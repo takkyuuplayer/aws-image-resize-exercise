@@ -22,6 +22,11 @@ Resources:
           - Action:
               - s3:GetObject
             Effect: Allow
+            Principal: "*"
+            Resource: !Sub arn:aws:s3:::${ImageBucket}/*
+          - Action:
+              - s3:GetObject
+            Effect: Allow
             Principal:
               AWS: !GetAtt EdgeLambdaRole.Arn
             Resource: !Sub arn:aws:s3:::${ImageBucket}/*

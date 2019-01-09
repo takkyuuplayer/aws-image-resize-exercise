@@ -15,11 +15,12 @@ Image converter with Lambda@Edge
 
 ## Demo
 
-| path                                | Image                                                                                      |
-| ----------------------------------- | ------------------------------------------------------------------------------------------ |
-| android.svg                         | ![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                          |
-| android.svg?format=jpeg             | ![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)         |
-| android.svg?size=200x200&format=png | ![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200) |
+| path                     | Image                                                                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| android.svg              | [![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                                       |
+| android.svg?format=jpeg  | [![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)          |
+| android.svg?size=200x200 | [![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200) |
+| android.svg?color=b-w    | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)           |
 
 ## Architecture
 
