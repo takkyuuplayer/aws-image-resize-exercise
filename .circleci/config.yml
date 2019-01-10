@@ -40,7 +40,9 @@ jobs:
       - attach_workspace:
           at: .
       - run: sudo pip install awscli
-      - run: make deploy
+      - run:
+          command: make deploy
+          no_output_timeout: 1800
 
 workflows:
   version: 2
