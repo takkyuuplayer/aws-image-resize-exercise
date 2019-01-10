@@ -30,7 +30,8 @@ Image converter with Lambda@Edge
 
 ### Deployment
 
-* TBA
+* [Workflows \- CircleCI](https://circleci.com/docs/2.0/workflows/)
+* [AWS Command Line Interface](https://docs.aws.amazon.com/cli/index.html)
 
 ## Reference
 
