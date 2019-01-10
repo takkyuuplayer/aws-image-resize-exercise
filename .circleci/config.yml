@@ -18,15 +18,16 @@ jobs:
           - v1-dependencies-
 
       - run: make
-      - run: make localstack
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: make localstack
       - run: make test
       - run: make build
+      - run: yum install tar -y
       - persist_to_workspace:
           root: .
           paths:
