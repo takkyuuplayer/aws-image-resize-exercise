@@ -9,12 +9,19 @@ up:
 stop:
 	docker-compose stop
 
-build:
+build: dist/package.json dist/yarn.lock
 	yarn build
-	cd dist \
-		&& npm init -f -y \
-		&& npm install sharp --save \
-		&& npm install --only=prod
+	cd dist && yarn install --production
+
+dist:
+	mkdir -p dist
+
+dist/package.json: dist
+	ln -s ../package.json dist/package.json
+
+dist/yarn.lock: dist
+	ln -s ../yarn.lock dist/yarn.lock
+
 
 deploy:
 	cd dist && zip -FS -q -r viewerRequest.zip viewerRequest.js

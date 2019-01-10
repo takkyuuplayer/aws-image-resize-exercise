@@ -1,8 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
+Description: tp-image-resize
+
 Parameters:
   BucketName:
     Type: String
+
 Resources:
   ImageBucket:
     Type: AWS::S3::Bucket
@@ -16,17 +19,17 @@ Resources:
       Bucket: !Ref ImageBucket
       PolicyDocument:
         Statement:
-            - Action:
-                - s3:GetObject
-              Effect: Allow
-              Principal: "*"
-              Resource: !Sub arn:aws:s3:::${ImageBucket}/*
-            - Action:
-                - s3:GetObject
-              Effect: Allow
-              Principal:
-                AWS: !GetAtt EdgeLambdaRole.Arn
-              Resource: !Sub arn:aws:s3:::${ImageBucket}/*
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Principal: "*"
+            Resource: !Sub arn:aws:s3:::${ImageBucket}/*
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt EdgeLambdaRole.Arn
+            Resource: !Sub arn:aws:s3:::${ImageBucket}/*
   EdgeLambdaRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -53,12 +56,7 @@ Resources:
       MemorySize: 128
       Timeout: 1
       Role: !GetAtt EdgeLambdaRole.Arn
-
-  ViewerRequestFunctionVersion:
-    Type: "AWS::Lambda::Version"
-    Properties:
-      FunctionName: !Ref ViewerRequestFunction
-      Description: "A version of ViewerRequestFunction"
+      AutoPublishAlias: live 
 
   OriginResponseFunction:
     Type: AWS::Serverless::Function
@@ -69,12 +67,7 @@ Resources:
       MemorySize: 512
       Timeout: 5
       Role: !GetAtt EdgeLambdaRole.Arn
-
-  OriginResponseFunctionVersion:
-    Type: "AWS::Lambda::Version"
-    Properties:
-      FunctionName: !Ref OriginResponseFunction
-      Description: "A version of OriginResponseFunction"
+      AutoPublishAlias: live 
 
   MyDistribution:
     Type: AWS::CloudFront::Distribution
@@ -85,37 +78,40 @@ Resources:
           Id: myS3Origin
           S3OriginConfig: {}
         Enabled: 'true'
-        Comment: distribution for content delivery
-        DefaultRootObject: index.html
+        Comment: Content delivery
         DefaultCacheBehavior:
           TargetOriginId: myS3Origin
           LambdaFunctionAssociations:
             - EventType: 'viewer-request'
-              LambdaFunctionARN: !Ref ViewerRequestFunctionVersion
+              LambdaFunctionARN: !Ref ViewerRequestFunction.Version
             - EventType: 'origin-response'
-              LambdaFunctionARN: !Ref OriginResponseFunctionVersion
+              LambdaFunctionARN: !Ref OriginResponseFunction.Version
           ForwardedValues:
             QueryString: 'true'
             QueryStringCacheKeys:
-              - size
+              - color
               - format
+              - size
             Cookies:
               Forward: 'none'
           ViewerProtocolPolicy: allow-all
           MinTTL: '100'
           SmoothStreaming: 'false'
           Compress: 'true'
-        PriceClass: PriceClass_All
+        PriceClass: PriceClass_100
         ViewerCertificate:
           CloudFrontDefaultCertificate: 'true'
 
 Outputs:
   ImageBucket:
     Value: !Ref ImageBucket
-    Export:
-      Name: !Sub "${AWS::StackName}-ImageBucket"
-
-  MyDistribution:
+  DistributionId:
     Value: !Ref MyDistribution
-    Export:
-      Name: !Sub "${AWS::StackName}-MyDistribution"
+  CloudfrontURL:
+    Description: CloudfrontURL
+    Value: !Join
+      - ""
+      - - "https://"
+        - !Ref MyDistribution
+        - ".cloudfront.com"
+

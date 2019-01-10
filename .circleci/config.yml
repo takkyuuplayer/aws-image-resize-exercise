@@ -15,29 +15,41 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run: make
-      - run: make localstack
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: make localstack
       - run: make test
       - run: make build
-  provision:
+      - run: yum install tar -y
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./dist
+  deploy:
     docker:
       - image: circleci/python:2.7-jessie
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run: sudo pip install awscli
-      - run: make test -C deployment
+      - run: make deploy
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - provision
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
