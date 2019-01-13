@@ -18,7 +18,7 @@ packaged.yml:
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation package \
 		--template-file template.cf.yml \
-		--s3-bucket tp-tmp \
+		--s3-bucket tp-tmp.us-east-1 \
 		--output-template-file packaged.yml
 
 deploy: packaged.yml
