@@ -26,6 +26,7 @@ deploy: packaged.yml
 		--stack-name ${StackName} \
 		--template-file packaged.yml \
 		--parameter-overrides BucketName=${BucketName}
+	$(MAKE) output
 
 output:
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \

@@ -112,6 +112,5 @@ Outputs:
     Value: !Join
       - ""
       - - "https://"
-        - !Ref MyDistribution
-        - ".cloudfront.com"
+        - !GetAtt MyDistribution.DomainName
 
