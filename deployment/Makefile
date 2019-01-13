@@ -13,10 +13,12 @@ confirm:
 		--parameter-overrides BucketName=${BucketName}
 
 packaged.yml:
+	cd ${DIR}/../dist && zip -FS -q -r viewerRequest.zip viewerRequest.js
+	cd ${DIR}/../dist && zip -FS -q -r originResponse.zip originResponse.js node_modules
 	AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 	aws cloudformation package \
 		--template-file template.cf.yml \
-		--s3-bucket tp-lambda.us-east-1 \
+		--s3-bucket tp-tmp \
 		--output-template-file packaged.yml
 
 deploy: packaged.yml

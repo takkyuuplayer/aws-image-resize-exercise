@@ -17,15 +17,13 @@ dist:
 	mkdir -p dist
 
 dist/package.json: dist
-	ln -s ../package.json dist/package.json
+	ln -fs ../package.json dist/package.json
 
 dist/yarn.lock: dist
-	ln -s ../yarn.lock dist/yarn.lock
+	ln -fs ../yarn.lock dist/yarn.lock
 
 
 deploy:
-	cd dist && zip -FS -q -r viewerRequest.zip viewerRequest.js
-	cd dist && zip -FS -q -r originResponse.zip originResponse.js node_modules
 	$(MAKE) deploy -C deployment
 
 localstack:
