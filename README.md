@@ -13,7 +13,7 @@ Image converter with Lambda@Edge
 | Origin Response | Convert image if needed.                                                  |
 | Viewer Response | Not in use.                                                               |
 
-## Demo
+## DEMO
 
 | path                                           | Image                                                                                                                                                                                                |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23,39 +23,35 @@ Image converter with Lambda@Edge
 | android.svg?color=b-w                          | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)                                                   |
 | android.svg?color=b-w&size=100x100&format=jpeg | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg) |
 
-## How To
+## HOW TO USE
 
-### Build
+1. Fix bucket name in `src/constants.ts` and `deployment/Makefile`
+2. Fix LambdaS3's bucket name in `deployment/Makefile`. The bucket should be in us-east-1 region.
+3. Build
 
-```
-$ docker run --volume=$PWD:/srv -w=/srv make
-$ docker run --volume=$PWD:/srv -w=/srv make build
-```
+    ```
+    $ docker run --volume=$PWD:/srv -w=/srv 8base/docker-amazonlinux-node:node8 make
+    $ docker run --volume=$PWD:/srv -w=/srv 8base/docker-amazonlinux-node:node8 make build
+    ```
+4. Deploy ([Takes 20+ minues...](https://forums.aws.amazon.com/thread.jspa?threadID=237248))
 
-### Deploy
+    ```
+    make deploy
+    ```
 
-```
-$ cd deployment
-$ make confirm BucketName=<Image Source Bucket Name> LambdaBucket=<S3 to upload lambda function in us-east-1>
-$ make deploy  BucketName=<Image Source Bucket Name>
-```
+5. Test
 
-### Test
+    ```
+    $ aws s3 sync ./test/data s3://<BucketName>
+    ```
 
-```
-$ docker-compose up -d
-$ make localstack
-$ docker exec -it tp-image-resize make
-$ docker exec -it tp-image-resize make test
-```
-
-## Architecture
+## ARCHITECTURE
 
 ### Lambda@Edge Function
 
 * [TypeScript](https://www.typescriptlang.org/)
 
-### Deployment
+### CI/CD
 
 * [Workflows \- CircleCI](https://circleci.com/docs/2.0/workflows/)
 * [AWS Command Line Interface](https://docs.aws.amazon.com/cli/index.html)
