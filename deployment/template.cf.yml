@@ -7,29 +7,24 @@ Parameters:
     Type: String
 
 Resources:
-  ImageBucket:
+  S3Bucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
     Properties:
-      AccessControl: PublicRead
+      AccessControl: Private
       BucketName: !Ref BucketName
-  ImageBucketPolicy:
+  S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
     Properties:
-      Bucket: !Ref ImageBucket
+      Bucket: !Ref S3Bucket
       PolicyDocument:
         Statement:
-          - Action:
-              - s3:GetObject
+          - Action: s3:GetObject
             Effect: Allow
-            Principal: "*"
-            Resource: !Sub arn:aws:s3:::${ImageBucket}/*
-          - Action:
-              - s3:GetObject
-            Effect: Allow
-            Principal:
-              AWS: !GetAtt EdgeLambdaRole.Arn
-            Resource: !Sub arn:aws:s3:::${ImageBucket}/*
+            Resource: !Sub arn:aws:s3:::${S3Bucket}/*
+            Principal: 
+              CanonicalUser: !GetAtt CloudFrontOAI.S3CanonicalUserId
+
   EdgeLambdaRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -56,7 +51,7 @@ Resources:
       MemorySize: 128
       Timeout: 1
       Role: !GetAtt EdgeLambdaRole.Arn
-      AutoPublishAlias: live 
+      AutoPublishAlias: live
 
   OriginResponseFunction:
     Type: AWS::Serverless::Function
@@ -69,16 +64,16 @@ Resources:
       Role: !GetAtt EdgeLambdaRole.Arn
       AutoPublishAlias: live 
 
-  MyDistribution:
+  CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !Sub ${ImageBucket}.s3.amazonaws.com
-          Id: myS3Origin
-          S3OriginConfig: {}
+          - DomainName: !GetAtt S3Bucket.DomainName
+            Id: myS3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOAI}
         Enabled: 'true'
-        Comment: Content delivery
         DefaultCacheBehavior:
           TargetOriginId: myS3Origin
           LambdaFunctionAssociations:
@@ -95,22 +90,26 @@ Resources:
             Cookies:
               Forward: 'none'
           ViewerProtocolPolicy: allow-all
-          MinTTL: '100'
+          MinTTL: '3600'
           SmoothStreaming: 'false'
           Compress: 'true'
-        PriceClass: PriceClass_100
+        HttpVersion: http2
         ViewerCertificate:
           CloudFrontDefaultCertificate: 'true'
+  CloudFrontOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub 'To access to ${S3Bucket}'
 
 Outputs:
   ImageBucket:
-    Value: !Ref ImageBucket
+    Value: !Ref S3Bucket
   DistributionId:
-    Value: !Ref MyDistribution
-  CloudfrontURL:
-    Description: CloudfrontURL
-    Value: !Join
-      - ""
-      - - "https://"
-        - !GetAtt MyDistribution.DomainName
-
+    Value: !Ref CloudFrontDistribution
+  CloudFrontURL:
+    Value: !GetAtt CloudFrontDistribution.DomainName
+  ViewerRequestFunctionVersion: 
+    Value: !Ref ViewerRequestFunction.Version
+  OriginResponseFunctionVersion: 
+    Value: !Ref OriginResponseFunction.Version
