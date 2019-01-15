@@ -15,12 +15,39 @@ Image converter with Lambda@Edge
 
 ## Demo
 
-| path                     | Image                                                                                                                                                        |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| android.svg              | [![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                                       |
-| android.svg?format=jpeg  | [![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)          |
-| android.svg?size=200x200 | [![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200) |
-| android.svg?color=b-w    | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)           |
+| path                                           | Image                                                                                                                                                                                                |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| android.svg                                    | [![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                                                                               |
+| android.svg?format=jpeg                        | [![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)                                                  |
+| android.svg?size=200x200                       | [![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)                                         |
+| android.svg?color=b-w                          | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)                                                   |
+| android.svg?color=b-w&size=100x100&format=jpeg | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg) |
+
+## How To
+
+### Build
+
+```
+$ docker run --volume=$PWD:/srv -w=/srv make
+$ docker run --volume=$PWD:/srv -w=/srv make build
+```
+
+### Deploy
+
+```
+$ cd deployment
+$ make confirm BucketName=<Image Source Bucket Name> LambdaBucket=<S3 to upload lambda function in us-east-1>
+$ make deploy  BucketName=<Image Source Bucket Name>
+```
+
+### Test
+
+```
+$ docker-compose up -d
+$ make localstack
+$ docker exec -it tp-image-resize make
+$ docker exec -it tp-image-resize make test
+```
 
 ## Architecture
 
