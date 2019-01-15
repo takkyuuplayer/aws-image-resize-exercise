@@ -39,11 +39,20 @@ Image converter with Lambda@Edge
     make deploy
     ```
 
-5. Test
+5. Confirm
 
     ```
     $ aws s3 sync ./test/data s3://<BucketName>
     ```
+
+    Refer CloudFront Distribution Domain Name
+
+    ```
+    $ cd deployment && make output
+    ```
+
+    * https://CloudFront/android.svg
+    * https://CloudFront/android.b-w.png?size=100x100
 
 ## ARCHITECTURE
 
@@ -56,7 +65,7 @@ Image converter with Lambda@Edge
 * [Workflows \- CircleCI](https://circleci.com/docs/2.0/workflows/)
 * [AWS Command Line Interface](https://docs.aws.amazon.com/cli/index.html)
 
-## Reference
+## REFERENCE
 
 * [Resizing Images with Amazon CloudFront & Lambda@Edge \| AWS CDN Blog \| Networking & Content Delivery](https://aws.amazon.com/blogs/networking-and-content-delivery/resizing-images-with-amazon-cloudfront-lambdaedge-aws-cdn-blog/)
 * [Managing Lambda@Edge and CloudFront deployments by using a CI/CD pipeline \| Networking & Content Delivery](https://aws.amazon.com/blogs/networking-and-content-delivery/managing-lambdaedge-and-cloudfront-deployments-by-using-a-ci-cd-pipeline/)
