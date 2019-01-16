@@ -15,13 +15,13 @@ Image converter with Lambda@Edge
 
 ## DEMO
 
-| path                                           | Image                                                                                                                                                                                                |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| android.svg                                    | [![android.svg](https://d3p1hm6bntztq0.cloudfront.net/android.svg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg)                                                                               |
-| android.svg?format=jpeg                        | [![android.svg.jpeg](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?format=jpeg)                                                  |
-| android.svg?size=200x200                       | [![android.svg.200x200.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?size=200x200)                                         |
-| android.svg?color=b-w                          | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w)                                                   |
-| android.svg?color=b-w&size=100x100&format=jpeg | [![android.svg.b-w.png](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg)](https://d3p1hm6bntztq0.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg) |
+| path                                           | Image                                                                                                                                                                                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| android.svg                                    | [![android.svg](http://d3j1mtqm8uuzbf.cloudfront.net/android.svg)](http://d3j1mtqm8uuzbf.cloudfront.net/android.svg)                                                                                                            |
+| android.svg?format=jpeg                        | [![android.svg?format=jpeg](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?format=jpeg)](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?format=jpeg)                                                                      |
+| android.svg?size=200x200                       | [![android.svg?size=200x200](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?size=200x200)](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?size=200x200)                                                                   |
+| android.svg?color=b-w                          | [![android.svg?color=b-w](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?color=b-w)](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?color=b-w)                                                                            |
+| android.svg?color=b-w&size=100x100&format=jpeg | [![android.svg?color=b-w&size=100x100&format=jpeg](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg)](https://d3j1mtqm8uuzbf.cloudfront.net/android.svg?color=b-w&size=100x100&format=jpeg) |
 
 ## HOW TO USE
 
@@ -51,8 +51,8 @@ Image converter with Lambda@Edge
     $ cd deployment && make output
     ```
 
-    * https://CloudFront/android.svg
-    * https://CloudFront/android.b-w.png?size=100x100
+    * https://CloudFrontURL/android.svg
+    * https://CloudFrontURL/android.b-w.png?size=100x100
 
 ## ARCHITECTURE
 
