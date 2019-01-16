@@ -24,6 +24,11 @@ Resources:
             Resource: !Sub arn:aws:s3:::${S3Bucket}/*
             Principal: 
               CanonicalUser: !GetAtt CloudFrontOAI.S3CanonicalUserId
+          - Action: s3:GetObject
+            Effect: Allow
+            Resource: !Sub arn:aws:s3:::${S3Bucket}/*
+            Principal: 
+              AWS: !GetAtt EdgeLambdaRole.Arn
 
   EdgeLambdaRole:
     Type: "AWS::IAM::Role"
